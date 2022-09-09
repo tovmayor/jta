@@ -81,3 +81,5 @@ output "build_ip" {
 }
 
 
+#echo -e "[build]\n"$(terraform output -raw build_ip)" ansible_user=ubuntu\n"
+
