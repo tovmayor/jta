@@ -13,8 +13,8 @@
 
   - name: Clone a repo from github
     git:
-      repo: https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
-      dest: /src/build/boxfuse-sample-java-war-hello
+      repo: https://github.com/tovmayor/myboxfuse.git
+      dest: /src/build/myboxfuse
       
   - name: Ensure maven package is present
     apt:
@@ -22,7 +22,7 @@
      state: present
 
   - name: build package
-    command: mvn -f /src/build/boxfuse-sample-java-war-hello package
+    command: mvn -f /src/build/myboxfuse package
         
   - name: Ensure docker package is present
     apt:
