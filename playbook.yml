@@ -1,0 +1,68 @@
+---
+- name: Install docker, maven, git, clone repo, build package, make docker image with tomcat9, with war-file
+  hosts: build
+  become: true
+  
+  tasks:
+ 
+  - name: Ensure git package is present
+    apt:
+     name: git
+     state: present
+     update_cache: yes
+
+  - name: Clone a repo from github
+    git:
+      repo: https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
+      dest: /src/build/boxfuse-sample-java-war-hello
+      
+  - name: Ensure maven package is present
+    apt:
+     name: maven
+     state: present
+
+  - name: build package
+    command: mvn -f /src/build/boxfuse-sample-java-war-hello package
+        
+  - name: Ensure docker package is present
+    apt:
+     name: docker.io
+     state: present
+
+  # - name: copying war file to local host
+  #   fetch:
+  #     src: /src/build/boxfuse-sample-java-war-hello/target/hello-1.0.war
+  #     dest: /home/andrew/
+  #     flat: yes
+
+# - name: prod host actions
+#   hosts: prod
+#   become: true
+
+#   tasks:
+ 
+#   - name: Install OpenJDK
+#     apt:
+#      name: openjdk-17-jre-headless
+#      state: present
+#      update_cache: yes
+
+#   - name: download tomcat server
+#     get_url:
+#       url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.65/bin/apache-tomcat-9.0.65.tar.gz
+#       dest: /usr/local
+
+#   - name: extract tomcat packages
+#     unarchive:
+#       src: /usr/local/apache-tomcat-9.0.65.tar.gz
+#       dest: /usr/local
+#       remote_src: yes
+
+#   - name: Copy war file to tomcat webapps directory
+#     copy:
+#      src: /home/andrew/hello-1.0.war
+#      dest: /usr/local/apache-tomcat-9.0.65/webapps/
+
+#   - name: start tomcat service
+#     shell: nohup /usr/local/apache-tomcat-9.0.65/bin/startup.sh
+
