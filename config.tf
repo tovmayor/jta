@@ -54,16 +54,7 @@ network_interface {
   metadata = {
     ssh-keys = "ubuntu:${file("/var/lib/jenkins/.ssh/id_rsa.pub")}"
   }
-# provisioner "remote-exec" {
-#     inline = [
-#       "sudo apt-get update -y && sudo apt-get install -y maven git && sudo apt-get install -y s3fs",
-#       "sudo echo YCAJECaxhWcm6rHMYeehDO2kH:YCPxhl-X6BvNYbA6cSF5Wpr8TlRHxBhkV6lhHz5S > ~/.passwd-s3fs && sudo chmod 600  ~/.passwd-s3fs",
-#       "sudo mkdir /mnt/ycb",
-#       "sudo s3fs a1dc8aa6f31a45f83 /mnt/ycb -o passwd_file=$HOME/.passwd-s3fs -o url=http://storage.yandexcloud.net -o use_path_request_style",
-#       "sudo git clone https://github.com/tovmayor/myboxfuse.git",
-#       "sudo mvn -f ./myboxfuse package", 
-#       "sudo cp /home/ubuntu/myboxfuse/target/hello-1.0.war /mnt/ycb/"
-#     ]
+
 # provisioner "remote-exec" { #to acquire external ip address if instance is shut down
 #     inline = [
 #       "uname > /dev/null"
@@ -75,7 +66,7 @@ network_interface {
 #       host = self.network_interface[0].nat_ip_address
 #     }
 #   }
-# }
+}
 output "build_ip" {
   value = yandex_compute_instance.build.network_interface[0].nat_ip_address
 }
