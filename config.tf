@@ -1,9 +1,5 @@
 terraform {
   required_providers {
-    docker = {
-      source = "kreuzwerker/docker"
-      version = "2.20.2"
-    }
     yandex = {
       source = "yandex-cloud/yandex"
       version = "0.77.0"
