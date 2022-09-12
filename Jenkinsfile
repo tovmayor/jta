@@ -13,6 +13,7 @@ pipeline {
             steps{
                 sh 'pwd && ls -la'
             }
+        }    
         stage('terraform Init') {
             steps{
                 sh 'terraform init'
