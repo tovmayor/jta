@@ -64,18 +64,18 @@ network_interface {
 #       "sudo mvn -f ./myboxfuse package", 
 #       "sudo cp /home/ubuntu/myboxfuse/target/hello-1.0.war /mnt/ycb/"
 #     ]
-provisioner "remote-exec" { #to acquire external ip address if instance is shut down
-    inline = [
-      "uname > /dev/null"
-    ]
-    connection {
-      type = "ssh"
-      user = "ubuntu"
-      private_key = file("/var/lib/jenkins/.ssh/id_rsa")
-      host = self.network_interface[0].nat_ip_address
-    }
-  }
-}
+# provisioner "remote-exec" { #to acquire external ip address if instance is shut down
+#     inline = [
+#       "uname > /dev/null"
+#     ]
+#     connection {
+#       type = "ssh"
+#       user = "ubuntu"
+#       private_key = file("/var/lib/jenkins/.ssh/id_rsa")
+#       host = self.network_interface[0].nat_ip_address
+#     }
+#   }
+# }
 output "build_ip" {
   value = yandex_compute_instance.build.network_interface[0].nat_ip_address
 }
