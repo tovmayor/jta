@@ -9,11 +9,10 @@ pipeline {
                 git branch: 'main', credentialsId: '4377acaf-03d8-44f5-84c4-0836c40569bd', url: 'https://github.com/tovmayor/jta.git'
             }
         }
-        stage('terraform format check') {
+        stage('Where am I') {
             steps{
-                sh 'terraform fmt'
+                sh 'pwd && ls -la'
             }
-        }
         stage('terraform Init') {
             steps{
                 sh 'terraform init'
