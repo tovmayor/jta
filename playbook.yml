@@ -21,8 +21,8 @@
      name: maven
      state: present
 
-  - name: build package
-    command: mvn -f /src/build/myboxfuse package
+  # - name: build package
+  #   command: mvn -f /src/build/myboxfuse package
         
   - name: Ensure docker package is present
     apt:

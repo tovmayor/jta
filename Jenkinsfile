@@ -32,10 +32,20 @@ pipeline {
        
         stage('ansible comes') {
             steps{
-//                sh 'ansible-playbook -i inv4ansible playbook.yml --private-key'
-                ansiblePlaybook playbook: 'playbook.yml', inventory: 'inv4ansible', credentialsId: '2eadfdda-cc98-42e0-bf1b-43c856dcf1af'
+                sh 'ansible-playbook -i inv4ansible playbook.yml --private-key /var/lib/jenkins/.ssh/id_rsa'
+//                ansiblePlaybook playbook: 'playbook.yml', inventory: 'inv4ansible', credentialsId: 'ubuntu'
             }
         }
+        stage('build the package') {
+            steps{
+                sh 'mvn -f /src/build/myboxfuse package'
+            }
+        }    
+        stage('build the package') {
+            steps{
+                sh 'cp /src/build/myboxfuse/target/*.war /src/build/'
+            }
+        }    
 
     }
 }
