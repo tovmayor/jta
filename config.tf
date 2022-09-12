@@ -54,7 +54,7 @@ network_interface {
   metadata = {
     ssh-keys = "ubuntu:${file("/var/lib/jenkins/.ssh/id_rsa.pub")}"
   }
-
+}
 # provisioner "remote-exec" { #to acquire external ip address if instance is shut down
 #     inline = [
 #       "uname > /dev/null"
@@ -66,7 +66,7 @@ network_interface {
 #       host = self.network_interface[0].nat_ip_address
 #     }
 #   }
-}
+#}
 output "build_ip" {
   value = yandex_compute_instance.build.network_interface[0].nat_ip_address
 }
