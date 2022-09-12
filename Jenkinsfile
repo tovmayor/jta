@@ -26,3 +26,7 @@ pipeline {
         }
     }
 }
+
+withCredentials([string(credentialsId: '2eadfdda-cc98-42e0-bf1b-43c856dcf1af', variable: 'AWS_ACCESS_KEY_ID'), 
+                       string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')]) {
+        
