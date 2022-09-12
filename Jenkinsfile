@@ -11,12 +11,12 @@ pipeline {
         }
         stage('Where am I') {
             steps{
-                sh 'pwd && ls -la'
+                sh 'pwd && ls -la && whoami'
             }
         }    
         stage('terraform Init') {
             steps{
-                sh 'terraform init'
+                sh 'terraform init -plugin-dir=/home/andrew/jta/.terraform/providers/'
             }
         }
         stage('terraform apply') {
