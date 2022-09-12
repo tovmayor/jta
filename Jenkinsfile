@@ -21,7 +21,7 @@ pipeline {
         }
         stage('build inventory for ansible') {
             steps{
-                sh 'echo -e "[build]\n"$(terraform output -raw build_ip)" ansible_user=ubuntu\n" > inv4ansible'
+                sh 'echo "[build]\n"$(terraform output -raw build_ip)" ansible_user=ubuntu\n" > inv4ansible'
             }
         }
         stage('Where am I') {
