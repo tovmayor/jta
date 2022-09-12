@@ -9,11 +9,6 @@ pipeline {
                 git branch: 'main', credentialsId: '4377acaf-03d8-44f5-84c4-0836c40569bd', url: 'https://github.com/tovmayor/jta.git'
             }
         }
-        stage('Where am I') {
-            steps{
-                sh 'pwd && ls -la && whoami'
-            }
-        }    
         stage('terraform Init') {
             steps{
                 sh 'terraform init -plugin-dir=/home/andrew/jta/.terraform/providers/'
@@ -24,9 +19,23 @@ pipeline {
                 sh 'terraform apply --auto-approve'
             }
         }
+        stage('build inventory for ansible') {
+            steps{
+                sh 'echo -e "[build]\n"$(terraform output -raw build_ip)" ansible_user=ubuntu\n" > inv4ansible'
+            }
+        }
+        stage('Where am I') {
+            steps{
+                sh 'pwd && ls -la && cat inv4ansible'
+            }
+        }    
+       
+        stage('ansible comes') {
+            steps{
+//                sh 'ansible-playbook -i inv4ansible playbook.yml --private-key'
+                ansiblePlaybook playbook: 'playbook.yml', inventory: 'inv4ansible', credentialsId: '2eadfdda-cc98-42e0-bf1b-43c856dcf1af'
+            }
+        }
+
     }
 }
-
-withCredentials([string(credentialsId: '2eadfdda-cc98-42e0-bf1b-43c856dcf1af', variable: 'AWS_ACCESS_KEY_ID'), 
-                       string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')]) {
-        
