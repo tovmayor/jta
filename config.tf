@@ -52,7 +52,7 @@ network_interface {
   }
 
   metadata = {
-    ssh-keys = "ubuntu:${file("/home/andrew/.ssh/id_rsa.pub")}"
+    ssh-keys = "ubuntu:${file("/var/lib/jenkins/.ssh/id_rsa.pub")}"
   }
 # provisioner "remote-exec" {
 #     inline = [
@@ -71,7 +71,7 @@ provisioner "remote-exec" { #to acquire external ip address if instance is shut 
     connection {
       type = "ssh"
       user = "ubuntu"
-      private_key = file("/home/andrew/.ssh/id_rsa")
+      private_key = file("/var/lib/jenkins/.ssh/id_rsa")
       host = self.network_interface[0].nat_ip_address
     }
   }
