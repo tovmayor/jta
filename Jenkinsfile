@@ -37,7 +37,7 @@ pipeline {
        
         stage('ansible comes') {
             steps{
-                sh 'ansible-playbook -i inv4ansible playbook.yml --private-key /var/lib/jenkins/.ssh/id_rsa'
+                sh 'ansible-playbook -i inv4ansible playbook.yml --private-key /var/lib/jenkins/.ssh/id_rsa --ssh-common-args="-o StrictHostKeyChecking=no"'
 //                ansiblePlaybook playbook: 'playbook.yml', inventory: 'inv4ansible', credentialsId: 'ubuntu'
             }
         }
