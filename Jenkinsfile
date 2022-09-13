@@ -9,6 +9,11 @@ pipeline {
                 git branch: 'main', credentialsId: '4377acaf-03d8-44f5-84c4-0836c40569bd', url: 'https://github.com/tovmayor/jta.git'
             }
         }
+        stage('echo JH') {
+            steps{
+                sh 'echo $JENKINS_HOME'
+            }
+        }
         stage('terraform Init') {
             steps{
                 sh 'terraform init -plugin-dir=/home/andrew/jta/.terraform/providers/'
@@ -36,16 +41,26 @@ pipeline {
 //                ansiblePlaybook playbook: 'playbook.yml', inventory: 'inv4ansible', credentialsId: 'ubuntu'
             }
         }
-        stage('build the package') {
-            steps{
-                sh 'mvn -f /src/build/myboxfuse package'
+        stage ('Run prod container') {
+            agent any
+            steps {
+                sh '''ssh root@$(build_ip) << EOF
+                mvn -f /src/build/myboxfuse package
+                cp /src/build/myboxfuse/target/*.war /src/build/
+                rm  -rf /src/build/myboxfuse
+                EOF'''
             }
-        }    
-        stage('build the package') {
-            steps{
-                sh 'cp /src/build/myboxfuse/target/*.war /src/build/'
-            }
-        }    
+        }        
 
+//        stage('build the package') {
+//            steps{
+//                sh 'mvn -f /src/build/myboxfuse package'
+//            }
+//        }    
+//        stage('copy the package') {
+//            steps{
+//                sh 'cp /src/build/myboxfuse/target/*.war /src/build/'
+//            }
+//        }    
     }
 }
