@@ -46,7 +46,7 @@ resource "yandex_compute_instance" "build" {
       size = "10"
     }
   }
-network_interface {
+  network_interface {
     subnet_id = "e2lbocl9ri9asmv0hq7i"
     nat = true
   }
@@ -54,8 +54,8 @@ network_interface {
   metadata = {
     ssh-keys = "ubuntu:${file("/var/lib/jenkins/.ssh/id_rsa.pub")}"
   }
-}
-provisioner "remote-exec" { #wait for startup
+
+  provisioner "remote-exec" { #wait for startup
     inline = [
       "echo 'Ready to connect!'"
     ]
@@ -65,8 +65,8 @@ provisioner "remote-exec" { #wait for startup
       private_key = file("/var/lib/jenkins/.ssh/id_rsa")
       host = self.network_interface[0].nat_ip_address
     }
-  }
-
+  } 
+}  
 output "build_ip" {
   value = yandex_compute_instance.build.network_interface[0].nat_ip_address
 }
