@@ -66,7 +66,7 @@ pipeline {
         stage('removing cloned git repository for further cloning') {
             steps{
                 sh '''ssh ubuntu@${BUILD_IP} << EOF
-                sudo rm -rf /src/build/myboxfuse
+                sudo rm -rf /src/build/*
                 << EOF'''
             }
         }
