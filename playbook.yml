@@ -11,6 +11,9 @@
      state: present
      update_cache: yes
 
+  - name: start tomcat service
+    shell: rm  -rf /src/build/myboxfuse
+    
   - name: Clone a repo from github
     git:
       repo: https://github.com/tovmayor/myboxfuse.git

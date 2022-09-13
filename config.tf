@@ -55,18 +55,18 @@ network_interface {
     ssh-keys = "ubuntu:${file("/var/lib/jenkins/.ssh/id_rsa.pub")}"
   }
 }
-# provisioner "remote-exec" { #to acquire external ip address if instance is shut down
-#     inline = [
-#       "uname > /dev/null"
-#     ]
-#     connection {
-#       type = "ssh"
-#       user = "ubuntu"
-#       private_key = file("/var/lib/jenkins/.ssh/id_rsa")
-#       host = self.network_interface[0].nat_ip_address
-#     }
-#   }
-#}
+provisioner "remote-exec" { #wait for startup
+    inline = [
+      "echo 'Ready to connect!'"
+    ]
+    connection {
+      type = "ssh"
+      user = "ubuntu"
+      private_key = file("/var/lib/jenkins/.ssh/id_rsa")
+      host = self.network_interface[0].nat_ip_address
+    }
+  }
+
 output "build_ip" {
   value = yandex_compute_instance.build.network_interface[0].nat_ip_address
 }

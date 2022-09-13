@@ -44,7 +44,7 @@ pipeline {
         stage ('Run prod container') {
             agent any
             steps {
-                sh '''ssh root@$(build_ip) << EOF
+                sh '''ssh root@$(terraform output -raw build_ip) << EOF
                 mvn -f /src/build/myboxfuse package
                 cp /src/build/myboxfuse/target/*.war /src/build/
                 rm  -rf /src/build/myboxfuse
