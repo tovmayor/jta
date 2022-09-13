@@ -55,7 +55,7 @@ pipeline {
         }        
         stage ('Copy Dockerfile to build instance & Build docker image') {
             steps {
-                sh 'scp Dockerfile ubuntu@${BUILD_IP}:/src/build/'
+                sh 'cat Dockerfile | ssh ubuntu@${BUILD_IP} "sudo tee -a /src/build/Dockerfile"'
                 sh '''ssh ubuntu@${BUILD_IP} << EOF
                 cd /src/build/
                 sudo docker build -t ${DOCKER_REPO}/jta-prod .
@@ -66,7 +66,7 @@ pipeline {
         stage('removing cloned git repository for further cloning') {
             steps{
                 sh '''ssh ubuntu@${BUILD_IP} << EOF
-                sh 'rm -rf /src/build/myboxfuse'
+                sh 'sudo rm -rf /src/build/myboxfuse'
                 << EOF'''
             }
         }
