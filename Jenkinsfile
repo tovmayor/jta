@@ -27,6 +27,7 @@ pipeline {
         stage('build inventory for ansible') {
             steps{
                 sh 'echo "[build]\n"$(terraform output -raw build_ip)" ansible_user=ubuntu\n" > inv4ansible'
+                sh 'BUILD_IP="$(terraform output -raw build_ip)"'
             }
         }
         stage('Where am I') {
@@ -44,7 +45,8 @@ pipeline {
         stage ('Run prod container') {
             agent any
             steps {
-                sh '''ssh root@$(terraform output -raw build_ip) << EOF
+                sh 'echo $BUILD_IP\n'
+                sh '''ssh root@$(BUILD_IP) << EOF
                 mvn -f /src/build/myboxfuse package
                 cp /src/build/myboxfuse/target/*.war /src/build/
                 rm  -rf /src/build/myboxfuse
