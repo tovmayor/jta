@@ -7,16 +7,6 @@ terraform {
   }
 }
 
-# variable "yc_token" {
-#   type        = string
-# }  
-# variable "yc_cloud_id" {
-#   type        = string
-# }  
-# variable "yc_folder_id" {
-#   type        = string
-# }  
-
 provider "yandex" {
   token     = "y0_AgAAAAAKYyQGAATuwQAAAADNneRzsw53q7T1Q2qTJPmxqfz87uq9uBk"
   cloud_id  = "b1g2mjplbcl08o830ovt"
