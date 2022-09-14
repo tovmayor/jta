@@ -11,9 +11,7 @@
      state: present
      update_cache: yes
 
-  # - name: cleaning previous repo clones
-  #   shell: rm  -rf /src/build/myboxfuse
-  - name: Recursively remove directory
+  - name: Cleaning previous version of cloned repository
     ansible.builtin.file:
       path: /src/build/
       state: absent  
@@ -40,7 +38,7 @@
 
   tasks:
  
-  - name: Install docker.io
+  - name: IEnsure docker package is present
     apt:
      name: docker.io
      state: present

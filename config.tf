@@ -108,5 +108,3 @@ output "prod_ip" {
   value = yandex_compute_instance.prod.network_interface[0].nat_ip_address
 }
 
-#sh 'echo "[build]\n"$(terraform output -raw build_ip)" ansible_user=ubuntu\n" > inv4ansible'
-
