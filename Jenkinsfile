@@ -6,7 +6,7 @@ pipeline {
     environment {
         BUILD_IP = 't-build'
         PROD_IP = 't-prod'
-        DOCKER_REPO = 'nexus_ip'
+        DOCKER_REPO = 'tovmayor/mywebdckr'
     }
 
     stages {
@@ -35,7 +35,6 @@ pipeline {
                 sh 'pwd && ls -la && cat inv4ansible'
             }
         }    
-       
         stage('ansible comes') {
             steps{
                 sh 'ssh-keyscan -H ${BUILD_IP} >> ~/.ssh/known_hosts'
@@ -55,17 +54,18 @@ pipeline {
                 sh 'cat Dockerfile | ssh ubuntu@${BUILD_IP} "sudo tee -a /src/build/Dockerfile"'
                 sh '''ssh ubuntu@${BUILD_IP} << EOF
                 cd /src/build/
-                sudo docker build -t ${DOCKER_REPO}/jta-prod .
-//                sh 'docker push ${DOCKER_REPO}/jta-prod'
+                sudo docker build -t ${DOCKER_REPO}:jta-prod .
+                sudo docker login -u tovmayor -p Ghbrjkbcm76
+                sudo docker push ${DOCKER_REPO}:jta-prod
                 << EOF'''
             }
         }        
-        stage('removing cloned git repository for further cloning') {
-            steps{
-//                sh '''ssh ubuntu@${BUILD_IP} << EOF
-//                sudo rm -rf /src/build/*
-//                << EOF'''
+        stage ('Run Docker image on prod instance') {
+            steps {
+                sh '''ssh ubuntu@${PROD_IP} << EOF
+                sudo docker run -p 8080:8080 -d ${DOCKER_REPO}:jta-prod
+                << EOF'''
             }
-        }
+        }        
     }
 }
