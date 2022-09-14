@@ -31,7 +31,8 @@ pipeline {
         }
         stage('build inventory for ansible') {
             steps{
-                 sh 'echo "[build]\n${BUILD_IP} ansible_user=ubuntu\n" > inv4ansible'
+                echo "***** ${BUILD_IP} *****"
+                echo "[build]\n${BUILD_IP} ansible_user=ubuntu\n" > inv4ansible
             }
         }    
         stage('Where am I') {
