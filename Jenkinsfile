@@ -35,7 +35,7 @@ pipeline {
         }
         stage ('Build package on build-instance') {
             steps {
-                sh '''ssh ubuntu@${BUILD_IP} << EOF
+                sh '''ssh ubuntu@${BUILD_IP} -o StrictHostKeyChecking=no << EOF
                 sudo mvn -f /src/build/myboxfuse package
                 sudo cp /src/build/myboxfuse/target/*.war /src/build/
                 << EOF'''
@@ -43,8 +43,8 @@ pipeline {
         }        
         stage ('Copy Dockerfile to build instance & Build docker image') {
             steps {
-                sh 'cat Dockerfile | ssh ubuntu@${BUILD_IP} "sudo tee -a /src/build/Dockerfile"'
-                sh '''ssh ubuntu@${BUILD_IP} << EOF
+                sh 'cat Dockerfile | ssh ubuntu@${BUILD_IP} -o StrictHostKeyChecking=no "sudo tee -a /src/build/Dockerfile"'
+                sh '''ssh ubuntu@${BUILD_IP} -o StrictHostKeyChecking=no << EOF
                 cd /src/build/
                 sudo docker build -t ${DOCKER_REPO}:jta-prod .
                 sudo docker login -u tovmayor -p Ghbrjkbcm76
@@ -54,7 +54,8 @@ pipeline {
         }        
         stage ('Run Docker image on prod instance') {
             steps {
-                sh '''ssh ubuntu@${PROD_IP} << EOF
+                sh 'ssh-keyscan -H ${PROD_IP} >> ~/.ssh/known_hosts'
+                sh '''ssh ubuntu@${PROD_IP} -o StrictHostKeyChecking=no << EOF
                 sudo docker run -p 8080:8080 -d ${DOCKER_REPO}:jta-prod
                 << EOF'''
             }
